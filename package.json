@@ -1,38 +1,42 @@
 {
   "name": "markvue",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Allows you write Vue SFC directly in Markdown",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "serve": "vite preview"
   },
+  "main": "lib/markvue.umd.js",
+  "module": "lib/markvue.es.js",
+  "types": "lib/src/index.d.ts",
   "homepage": "https://github.com/backrunner/markvue",
   "repository": {
     "type": "git",
     "url": "https://github.com/backrunner/markvue.git"
   },
+  "sideEffects": "false",
   "dependencies": {
-    "@vue/compiler-dom": "^3.2.24",
     "@vue/compiler-sfc": "^3.2.24",
-    "marked": "^4.0.6",
-    "vue": "^3.2.16"
+    "marked": "^4.0.7",
+    "vue": "^3.2.24"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.16.3",
     "@types/lodash-es": "^4.17.5",
     "@types/marked": "^4.0.1",
-    "@types/node": "^16.11.11",
-    "@typescript-eslint/eslint-plugin": "^5.5.0",
-    "@typescript-eslint/parser": "^5.5.0",
-    "@vitejs/plugin-vue": "^1.9.3",
+    "@types/node": "^16.11.12",
+    "@typescript-eslint/eslint-plugin": "^5.6.0",
+    "@typescript-eslint/parser": "^5.6.0",
+    "@vitejs/plugin-vue": "^1.10.2",
     "cross-env": "^7.0.3",
-    "eslint": "^8.4.0",
+    "eslint": "^8.4.1",
     "eslint-config-alloy": "^4.4.0",
     "eslint-config-prettier": "^8.3.0",
     "prettier": "^2.5.1",
-    "typescript": "^4.4.3",
-    "vite": "^2.6.4",
+    "typescript": "^4.5.3",
+    "vite": "^2.7.1",
+    "vite-plugin-dts": "^0.9.6",
     "vue-eslint-parser": "^8.0.1",
     "vue-tsc": "^0.3.0"
   }
