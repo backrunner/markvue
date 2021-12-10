@@ -15,7 +15,7 @@
     "type": "git",
     "url": "https://github.com/backrunner/markvue.git"
   },
-  "sideEffects": "false",
+  "sideEffects": false,
   "dependencies": {
     "@vue/compiler-sfc": "^3.2.24",
     "marked": "^4.0.7",

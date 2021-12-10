@@ -17,6 +17,13 @@ export default defineConfig({
     },
     rollupOptions: {
       external: ['vue', 'marked', '@vue/compiler-sfc'],
+      output: {
+        globals: {
+          vue: 'Vue',
+          marked: 'Marked',
+          '@vue/compiler-sfc': 'compilerSfc',
+        },
+      },
     },
   },
 });
