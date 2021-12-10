@@ -1,10 +1,16 @@
 {
   "name": "markvue",
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "description": "Allows you write Vue SFC directly in Markdown",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "serve": "vite preview"
+  },
+  "homepage": "https://github.com/backrunner/markvue",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/backrunner/markvue.git"
   },
   "dependencies": {
     "@vue/compiler-dom": "^3.2.24",
