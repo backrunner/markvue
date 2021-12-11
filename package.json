@@ -1,6 +1,6 @@
 {
   "name": "markvue",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Allows you write Vue SFC directly in Markdown",
   "scripts": {
     "dev": "vite",
@@ -38,6 +38,6 @@
     "vite": "^2.7.1",
     "vite-plugin-dts": "^0.9.6",
     "vue-eslint-parser": "^8.0.1",
-    "vue-tsc": "^0.3.0"
+    "vue-tsc": "^0.29.8"
   }
 }
