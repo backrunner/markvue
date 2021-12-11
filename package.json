@@ -1,6 +1,6 @@
 {
   "name": "markvue",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Allows you write Vue SFC directly in Markdown",
   "scripts": {
     "dev": "vite",
