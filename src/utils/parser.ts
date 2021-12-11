@@ -3,16 +3,19 @@ import { marked } from 'marked';
 import { createVueSFCModule } from './compiler';
 
 interface ParsedComponent {
-  template: string;
-  styles: string;
-  script: string;
+  template?: string;
+  styles?: string;
+  script?: string;
+  name?: string;
+  type: 'sfc' | 'comp';
 }
 
 export interface ParsedComponentWithId extends ParsedComponent {
   id: string;
 }
 
-const VUE_SFC_REGEX = /<vue-sfc>\r?\n([\S\s]+?)\r?\n<\/vue-sfc>/gim;
+const VUE_SFC_REGEX = /<vue-sfc>[\r?\n]+([\S\s]+?)[\r?\n]+<\/vue-sfc>/gim;
+const VUE_COMP_REGEX = /<vue-comp name=["'](\S+)["'](\s+)?\/?>((\s+)?<\/vue-comp>)?/gim;
 
 const getVueSFCTemplates = (content: string) => {
   let transformedContent = content;
@@ -27,6 +30,23 @@ const getVueSFCTemplates = (content: string) => {
   return {
     transformedContent,
     templates: sfcTemplates,
+  };
+};
+
+const getVueCompDetails = (content: string) => {
+  let transformedContent = content;
+  const stubComponents: ParsedComponentWithId[] = [...content.matchAll(VUE_COMP_REGEX)].map((parts) => {
+    const compId = nanoid();
+    transformedContent = transformedContent.replace(parts[0], `<div id="markvue-${compId}"></div>`);
+    return {
+      id: compId,
+      type: 'comp',
+      name: parts[1],
+    };
+  });
+  return {
+    stubTransformedContent: transformedContent,
+    stubComponents,
   };
 };
 
@@ -115,11 +135,13 @@ export const parse = async (content: string) => {
   // wrap compiled script
   const wrappedComponents: ParsedComponentWithId[] = components.map((item) => ({
     ...item,
-    script: transformScriptCode(item.id, item.script),
-    template: transformTemplateCode(item.id, item.template),
+    script: transformScriptCode(item.id, item.script!),
+    template: transformTemplateCode(item.id, item.template!),
   }));
+  // get stub component
+  const { stubTransformedContent, stubComponents } = getVueCompDetails(transformedContent);
   return {
-    parsedContent: marked.parse(transformedContent),
-    components: wrappedComponents,
+    parsedContent: marked.parse(stubTransformedContent),
+    components: wrappedComponents.concat(stubComponents),
   };
 };

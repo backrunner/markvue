@@ -34,4 +34,8 @@ button {
   </div>
 </template>
 </vue-sfc>
+
+Here's a vue component stub.
+
+<vue-comp name="stubTest" />
 `;

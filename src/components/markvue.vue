@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { ref, defineComponent, onMounted, PropType, createApp, nextTick } from 'vue';
+import { ref, defineComponent, onMounted, PropType, createApp, nextTick, Component } from 'vue';
 import * as Vue from 'vue';
 import { parse, ParsedComponentWithId } from '../utils/parser';
 
@@ -32,6 +32,11 @@ export default defineComponent({
   },
   setup(props) {
     const container = ref(null);
+    const context = props.context;
+
+    if (!context.vue) {
+      context.vue = Vue;
+    }
 
     const extendedWindow = window as ExtendedWindow;
     if (!extendedWindow.markVueModules) {
@@ -40,7 +45,7 @@ export default defineComponent({
 
     const insertStyles = (component: ParsedComponentWithId) => {
       const styleTag = document.createElement('style');
-      styleTag.innerHTML = component.styles;
+      styleTag.innerHTML = component.styles!;
       styleTag.id = `markvue-styles-${component.id}`;
       document.head.appendChild(styleTag);
     };
@@ -49,10 +54,10 @@ export default defineComponent({
       if (!extendedWindow.markVueModules![component.id]) {
         extendedWindow.markVueModules![component.id] = {};
       }
-      eval(component.script);
-      eval(component.template);
-      const scriptRet = extendedWindow.markVueModules![component.id]?.getScript?.(props.context) || null;
-      const render = extendedWindow.markVueModules![component.id]?.getTemplate?.(props.context) || null;
+      eval(component.script!);
+      eval(component.template!);
+      const scriptRet = extendedWindow.markVueModules![component.id]?.getScript?.(context) || null;
+      const render = extendedWindow.markVueModules![component.id]?.getTemplate?.(context) || null;
       return {
         __scopeId: `data-v-${component.id}`,
         ...scriptRet,
@@ -72,10 +77,18 @@ export default defineComponent({
       containerEl.innerHTML = parsedContent;
       // render components
       components.forEach(async (component) => {
-        // insert styles
-        insertStyles(component);
-        // run vue components
-        createApp(compose(component)).mount(`#markvue-${component.id}`);
+        if (component.type === 'sfc') {
+          // insert styles
+          insertStyles(component);
+          // run vue components
+          createApp(compose(component)).mount(`#markvue-${component.id}`);
+        } else {
+          if (!context[component.name!]) {
+            console.warn('[Markvue] No matched component in context.');
+            return;
+          }
+          createApp(context[component.name!] as Component).mount(`#markvue-${component.id}`);
+        }
       });
     };
 

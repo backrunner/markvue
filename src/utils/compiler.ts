@@ -1,5 +1,4 @@
 import { compileScript, compileStyle, compileTemplate, parse, SFCTemplateCompileOptions } from '@vue/compiler-sfc';
-import { nanoid } from './nanoid';
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -59,6 +58,7 @@ export const createVueSFCModule = async (id: string, source: string) => {
   }
 
   component.id = id;
+  component.type = 'sfc';
 
   return component;
 };
