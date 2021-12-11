@@ -14,17 +14,18 @@ export interface ParsedComponentWithId extends ParsedComponent {
   id: string;
 }
 
-const VUE_SFC_REGEX = /<vue-sfc>[\r?\n]+([\S\s]+?)[\r?\n]+<\/vue-sfc>/gim;
-const VUE_COMP_REGEX = /<vue-comp name=["'](\S+)["'](\s+)?\/?>((\s+)?<\/vue-comp>)?/gim;
+const VUE_SFC_REGEX = /<vue-sfc(\s+\S+)?>[\r?\n]+([\S\s]+?)[\r?\n]+<\/vue-sfc>/gim;
+const VUE_COMP_REGEX = /<vue-comp\s+([a-zA-Z0-9-_"'\s=]+)\s*\/?>(\s*<\/vue-comp>)?/gim;
+const COMPONENT_REGEX = /\s*component=["'](\S+)["']/;
 
 const getVueSFCTemplates = (content: string) => {
   let transformedContent = content;
   const sfcTemplates = [...content.matchAll(VUE_SFC_REGEX)].map((parts) => {
     const sfcId = nanoid();
-    transformedContent = transformedContent.replace(parts[0], `<div id="markvue-${sfcId}"></div>`);
+    transformedContent = transformedContent.replace(parts[0], `<div id="markvue-${sfcId}"${parts[1]}></div>`);
     return {
       id: sfcId,
-      sfc: parts[1],
+      sfc: parts[2],
     };
   });
   return {
@@ -35,15 +36,33 @@ const getVueSFCTemplates = (content: string) => {
 
 const getVueCompDetails = (content: string) => {
   let transformedContent = content;
-  const stubComponents: ParsedComponentWithId[] = [...content.matchAll(VUE_COMP_REGEX)].map((parts) => {
-    const compId = nanoid();
-    transformedContent = transformedContent.replace(parts[0], `<div id="markvue-${compId}"></div>`);
-    return {
-      id: compId,
-      type: 'comp',
-      name: parts[1],
-    };
-  });
+  const stubComponents: ParsedComponentWithId[] = [...content.matchAll(VUE_COMP_REGEX)]
+    .map((parts) => {
+      console.log(parts);
+      const compId = nanoid();
+      const attrs = parts[1];
+      if (!attrs) {
+        console.error('[MarkVue] Cannot find any attributes in <vue-comp>.');
+        return null;
+      }
+      const nameMatch = parts[1].match(COMPONENT_REGEX);
+      if (!nameMatch || !nameMatch[1]) {
+        console.error('[MarkVue] Cannot find attribute "component" in <vue-comp>.');
+        return null;
+      }
+      const name = nameMatch[1];
+      const componentRemovedAttrs = parts[1].replace(nameMatch[0], '');
+      transformedContent = transformedContent.replace(
+        parts[0],
+        `<div id="markvue-${compId}"${componentRemovedAttrs}></div>`,
+      );
+      return {
+        id: compId,
+        type: 'comp',
+        name,
+      };
+    })
+    .filter((item) => !!item) as ParsedComponentWithId[];
   return {
     stubTransformedContent: transformedContent,
     stubComponents,

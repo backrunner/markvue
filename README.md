@@ -74,7 +74,7 @@ button {
 
 Here's a vue component stub.
 
-<vue-comp name="stubTest" />
+<vue-comp component="stubTest" />
 `
 export default defineComponent({
   setup() {
@@ -127,7 +127,7 @@ You can also put a Vue component into `context` directly, you can mix it into yo
 
 content
 
-<vue-comp name="myComponent" />
+<vue-comp component="myComponent" />
 ```
 
 ```vue
@@ -144,6 +144,17 @@ return {
   },
 };
 </script>
+```
+
+If you want to add `class` or some other attribute in the root element of Vue SFC or Vue component, you can just add it to the `<vue-sfc>` or `<vue-comp>` tag, like this:
+
+```Markdown
+<vue-comp class="my-vue-comp" />
+
+or
+
+<vue-sfc class="my-vue-sfc">
+</vue-sfc>
 ```
 
 ## Features

@@ -5,7 +5,7 @@ export const demoContent = `
 
 Here's some content and the following is a vue sfc.
 
-<vue-sfc>
+<vue-sfc class="sfc-test">
 <template>
   <div class="sfc-test">
     <button @click="count++">{{ count }}</button>
@@ -37,5 +37,5 @@ button {
 
 Here's a vue component stub.
 
-<vue-comp name="stubTest" />
+<vue-comp component="stubTest" name="test" class="sfc-test-2"/>
 `;
