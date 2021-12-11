@@ -113,7 +113,7 @@ const transformImports = (script: string) => {
   importMatches.forEach((match) => {
     const transformed = match.imported.map((imported) => {
       if (Array.isArray(imported)) {
-        return `const { ${imported[0]}: ${imported[1]} } = context['${match.from}']`;
+        return `const ${imported[1] || imported[0]} = context['${match.from}']['${imported[0]}']`;
       }
       return `const ${imported} = context['${match.from}']`;
     });
