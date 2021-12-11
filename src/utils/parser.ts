@@ -30,7 +30,7 @@ const getVueSFCTemplates = (content: string) => {
   };
 };
 
-const IMPORT_REGEX = /import\s+(.+)\s+from\s*["'](.+);?["']/gi;
+const IMPORT_REGEX = /import\s+(.+)\s+from\s*["'](.+)["'];?/gi;
 
 const transformImports = (script: string) => {
   const importMatches = [...script.matchAll(IMPORT_REGEX)].map((item) => {
