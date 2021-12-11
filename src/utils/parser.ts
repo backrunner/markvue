@@ -14,6 +14,10 @@ export interface ParsedComponentWithId extends ParsedComponent {
   id: string;
 }
 
+export interface ParseOptions {
+  marked?: marked.MarkedOptions;
+}
+
 const VUE_SFC_REGEX = /<vue-sfc(\s+\S+)?>[\r?\n]+([\S\s]+?)[\r?\n]+<\/vue-sfc>/gim;
 const VUE_COMP_REGEX = /<vue-comp\s+([a-zA-Z0-9-_"'\s=]+)\s*\/?>(\s*<\/vue-comp>)?/gim;
 const COMPONENT_REGEX = /\s*component=["'](\S+)["']/;
@@ -140,7 +144,7 @@ const transformTemplateCode = (id: string, script: string) => {
   return '';
 };
 
-export const parse = async (content: string) => {
+export const parse = async (content: string, options?: ParseOptions) => {
   const { transformedContent, templates } = getVueSFCTemplates(content);
   const components = await Promise.all(
     templates.map(
@@ -160,7 +164,7 @@ export const parse = async (content: string) => {
   // get stub component
   const { stubTransformedContent, stubComponents } = getVueCompDetails(transformedContent);
   return {
-    parsedContent: marked.parse(stubTransformedContent),
+    parsedContent: marked(stubTransformedContent, options?.marked || undefined),
     components: wrappedComponents.concat(stubComponents),
   };
 };

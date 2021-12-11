@@ -6,6 +6,7 @@
 import { ref, defineComponent, onMounted, PropType, createApp, nextTick, Component } from 'vue';
 import * as Vue from 'vue';
 import { parse, ParsedComponentWithId } from '../utils/parser';
+import type { marked } from 'marked';
 
 interface ExtendedWindow extends Window {
   markVueModules?: {
@@ -28,6 +29,11 @@ export default defineComponent({
       default: () => ({
         vue: Vue,
       }),
+    },
+    markedOptions: {
+      type: Object as PropType<marked.MarkedOptions | undefined>,
+      required: false,
+      default: undefined,
     },
   },
   setup(props) {
@@ -71,7 +77,9 @@ export default defineComponent({
         console.warn('[Markvue] Cannot access the container element.');
         return;
       }
-      const { parsedContent, components } = await parse(props.content);
+      const { parsedContent, components } = await parse(props.content, {
+        marked: props.markedOptions,
+      });
       // insert markdown dom
       const containerEl = container.value as HTMLElement;
       containerEl.innerHTML = parsedContent;

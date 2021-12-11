@@ -157,6 +157,14 @@ or
 </vue-sfc>
 ```
 
+For custom options of `marked`, you can set an attribute `markedOptions` to `MarkVue`, like this:
+
+```vue
+<template>
+  <markvue :markedOptions="markedOptions">
+</template>
+```
+
 ## Features
 
 Supported SFC Features:
