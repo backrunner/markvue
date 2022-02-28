@@ -86,9 +86,9 @@ export default defineComponent({
 </script>
 ```
 
-For Vue SFC, MarkVue will inject Vue into the SFC as `context`, you can import APIs from Vue directly.
+For Vue SFC, markvue will inject Vue into the SFC as `context`, you can import APIs from Vue directly.
 
-If you want to import something from other package, be sure to put it in the `context`, and bind it to MarkVue, just like this:
+If you want to import something from other package, be sure to put it in the `context`, and bind it to markvue, just like this:
 
 ```vue
 <template>
@@ -157,11 +157,11 @@ or
 </vue-sfc>
 ```
 
-For custom options of `marked`, you can set an attribute `markedOptions` to `MarkVue`, like this:
+For custom options of `marked`, you can set an attribute `markedOptions` to `markvue`, like this:
 
 ```vue
 <template>
-  <markvue :markedOptions="markedOptions">
+  <MarkVue :markedOptions="markedOptions">
 </template>
 ```
 

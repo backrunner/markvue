@@ -18,6 +18,7 @@ interface ExtendedWindow extends Window {
 }
 
 export default defineComponent({
+  name: 'MarkVue',
   props: {
     content: {
       type: String,
