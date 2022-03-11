@@ -3,7 +3,9 @@ export const demoContent = `
 
 ## Subtitle
 
-Here's some content and the following is a vue sfc.
+Here's some content.
+
+Next is a Vue SFC (counter).
 
 <vue-sfc class="sfc-test">
 <template>
@@ -18,24 +20,14 @@ const count = ref(0);
 </script>
 <style scoped>
 button {
-  padding: 6px 12px;
+  padding: 6px 18px;
   background: #41aeff;
   color: #fff;
   font-weight: 600;
   border-radius: 6px;
+  border: none;
+  cursor: pointer;
 }
 </style>
 </vue-sfc>
-
-<vue-sfc>
-<template>
-  <div class="sfc-test">
-    <span>second sfc</span>
-  </div>
-</template>
-</vue-sfc>
-
-Here's a vue component stub.
-
-<vue-comp component="stubTest" name="test" class="sfc-test-2"/>
 `;
