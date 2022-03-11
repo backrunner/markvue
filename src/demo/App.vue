@@ -90,7 +90,7 @@
         </div>
         <div class="rendered">
           <p class="tag">Rendered</p>
-          <markvue :content="demoContent" :context="context" />
+          <markvue :content="demoContent" />
         </div>
       </div>
     </div>
