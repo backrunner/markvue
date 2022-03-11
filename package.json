@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
+    "build:demo": "vue-tsc --noEmit && cross-env BUILD_TARGET=demo vite build",
     "serve": "vite preview"
   },
   "files": [
